@@ -83,6 +83,15 @@ impl Add for Vec3 {
     }
 }
 
+impl Add<f64> for Vec3 {
+    type Output = Self;
+    fn add(self, rhs: f64) -> Self::Output {
+        Vec3 {
+            e: [self.e[0] + rhs, self.e[1] + rhs, self.e[2] + rhs],
+        }
+    }
+}
+
 impl Sub for Vec3 {
     type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
@@ -92,6 +101,15 @@ impl Sub for Vec3 {
                 self.e[1] - rhs.e[1],
                 self.e[2] - rhs.e[2],
             ],
+        }
+    }
+}
+
+impl Sub<f64> for Vec3 {
+    type Output = Self;
+    fn sub(self, rhs: f64) -> Self::Output {
+        Vec3 {
+            e: [self.e[0] - rhs, self.e[1] - rhs, self.e[2] - rhs],
         }
     }
 }
@@ -149,12 +167,12 @@ impl Vec3 {
     pub fn length(&self) -> f64 {
         (self.e[0] * self.e[0] + self.e[1] * self.e[1] + self.e[2] * self.e[2]).sqrt()
     }
-    pub fn squared_length(&self) -> f64 {
+    pub fn length_squared(&self) -> f64 {
         self.length() * self.length()
     }
 }
 
-pub type point3 = Vec3;
+pub type Point3 = Vec3;
 
 pub fn dot(u: Vec3, v: Vec3) -> f64 {
     u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] * v.e[2]

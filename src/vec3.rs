@@ -1,6 +1,6 @@
-use std::{
-    fmt::write,
-    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign},
+use crate::rtweekend::*;
+use std::ops::{
+    Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign,
 };
 
 #[derive(Clone, Copy)]
@@ -170,6 +170,22 @@ impl Vec3 {
     pub fn length_squared(&self) -> f64 {
         self.length() * self.length()
     }
+
+    pub fn random() -> Self {
+        Self {
+            e: [random_double(), random_double(), random_double()],
+        }
+    }
+
+    pub fn random_range(min: f64, max: f64) -> Self {
+        Self {
+            e: [
+                random_double_range(min, max),
+                random_double_range(min, max),
+                random_double_range(min, max),
+            ],
+        }
+    }
 }
 
 pub type Point3 = Vec3;
@@ -190,4 +206,17 @@ pub fn cross(u: Vec3, v: Vec3) -> Vec3 {
 
 pub fn unit_vector(v: Vec3) -> Vec3 {
     v / v.length()
+}
+
+pub fn random_in_unit_sphere() -> Vec3 {
+    loop {
+        let p = Vec3::random_range(-1.0, 1.0);
+        if p.length() < 1.0 {
+            return p;
+        }
+    }
+}
+
+pub fn random_unit_vector() -> Vec3 {
+    unit_vector(random_in_unit_sphere())
 }

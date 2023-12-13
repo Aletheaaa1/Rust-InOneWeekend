@@ -203,20 +203,43 @@ pub fn cross(u: Vec3, v: Vec3) -> Vec3 {
         ],
     }
 }
-
 pub fn unit_vector(v: Vec3) -> Vec3 {
     v / v.length()
 }
 
-pub fn random_in_unit_sphere() -> Vec3 {
+pub fn random_in_unit_disk() -> Vec3 {
     loop {
-        let p = Vec3::random_range(-1.0, 1.0);
-        if p.length() < 1.0 {
+        let p = Vec3::new(
+            random_double_range(-1.0, 1.0),
+            random_double_range(-1.0, 1.0),
+            0.0,
+        );
+        if p.length_squared() < 1.0 {
             return p;
         }
     }
 }
 
+pub fn random_in_unit_sphere() -> Vec3 {
+    loop {
+        let p = Vec3::random_range(-1.0, 1.0);
+        if p.length_squared() > 1.0 {
+            continue;
+        }
+        return p;
+    }
+}
+
 pub fn random_unit_vector() -> Vec3 {
     unit_vector(random_in_unit_sphere())
+}
+
+pub fn random_on_hemisphere(normal: &Vec3) -> Vec3 {
+    let on_unit_sphere = random_in_unit_sphere();
+    if dot(on_unit_sphere, *normal) > 0.0 {
+        // In the same hemisphere as the normal
+        on_unit_sphere
+    } else {
+        -on_unit_sphere
+    }
 }
